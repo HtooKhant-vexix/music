@@ -1,37 +1,80 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import { Tabs } from "expo-router";
+import { colors, fontSize } from "@/constants/tokens";
+import { BlurView } from "expo-blur";
+import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+const TabsNavigation = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: colors.primary,
+        tabBarLabelStyle: {
+          fontSize: fontSize.sm,
+          fontWeight: "500",
+        },
         headerShown: false,
-      }}>
+        tabBarBackground: () => (
+          <BlurView
+            intensity={30}
+            style={{
+              ...StyleSheet.absoluteFillObject,
+              overflow: "hidden",
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            }}
+          />
+        ),
+        tabBarStyle: {
+          position: "absolute",
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          borderTopWidth: 0,
+          paddingBottom: 13,
+          paddingTop: 12,
+          height: 85,
+        },
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="favorites"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          title: "Favorites",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="heart" size={25} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="playlists"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          title: "Playlists",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="list" size={25} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="(songs)"
+        options={{
+          title: "Songs",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="music" size={25} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="artists"
+        options={{
+          title: "Artists",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome6 name="users-line" size={25} color={color} />
           ),
         }}
       />
     </Tabs>
   );
-}
+};
+
+export default TabsNavigation;
